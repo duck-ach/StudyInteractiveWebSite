@@ -86,7 +86,7 @@ gsap.to(".worm-w", {
   scaleX: 1.5,
   scaleY: 0.8,
   duration: 0.8,
-  repeat: -1,
+  repeat: 1,
   repeatDelay: 4.2, // 0.8 + 4.2 = 5초 주기
   yoyo: true,
   ease: "elastic.out(1, 0.3)", // 띠요오옹 하는 탄성 효과
@@ -97,7 +97,7 @@ gsap.to(".worm-j", {
   scaleY: 1.8,
   scaleX: 0.7,
   duration: 1,
-  repeat: -1,
+  repeat: 1,
   repeatDelay: 7, // 1 + 7 = 8초 주기
   yoyo: true,
   ease: "elastic.out(1, 0.3)",
@@ -151,4 +151,61 @@ gsap.to(".bang", {
   yoyo: true, // 다시 정방향으로 돌아옴
   repeatDelay: 4, // 회전 후 4초 대기 (회전시간 1초 + 대기 4초 = 총 5초 주기)
   ease: "back.inOut(2)", // 시작과 끝에 약간의 탄성을 줘서 역동적으로
+});
+
+// Section 2: About Me 등장
+gsap.from(".about-visual, .adv-box", {
+  scrollTrigger: {
+    trigger: ".section2",
+    start: "top 60%",
+  },
+  y: 50,
+  opacity: 0,
+  stagger: 0.2,
+  duration: 1,
+});
+
+// Section 3: 타임라인 중앙 집중 & 순차 확대
+const nodes = gsap.utils.toArray(".time-node");
+const tl3 = gsap.timeline({
+  scrollTrigger: {
+    trigger: ".section3",
+    start: "top top",
+    end: "+=3000",
+    pin: true,
+    scrub: 1,
+  },
+});
+
+nodes.forEach((node, i) => {
+  tl3
+    .to(node, { opacity: 1, scale: 1, duration: 1 })
+    .to(node, { opacity: 0, scale: 1.5, duration: 1 }, "+=0.5");
+});
+
+// Section 4: 마우스 호버 시 스킬 레벨 업
+document.querySelectorAll(".skill-item").forEach((item) => {
+  const fill = item.querySelector(".fill");
+  const level = item.getAttribute("data-level");
+
+  item.addEventListener("mouseenter", () => {
+    gsap.to(fill, { width: level, duration: 0.8, ease: "power2.out" });
+  });
+  item.addEventListener("mouseleave", () => {
+    gsap.to(fill, { width: "0%", duration: 0.5 });
+  });
+});
+
+// Section 5~7: 프로젝트 패럴랙스
+gsap.utils.toArray(".project-sec").forEach((sec) => {
+  gsap.from(sec.querySelector(".proj-info"), {
+    scrollTrigger: {
+      trigger: sec,
+      start: "top 80%",
+      toggleActions: "play none none reverse",
+    },
+    x: -100,
+    opacity: 0,
+    duration: 1,
+  });
 });
