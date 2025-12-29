@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@motionone/vue": "^10.16.4"
+  }
+}
